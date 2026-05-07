@@ -1,0 +1,190 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7f6;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+  color: #333;
+}
+
+.container { 
+  width: 90%;
+  max-width: 1000px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse; /* Removes double borders */
+  margin-top: 20px;
+}
+
+th,
+td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #2c3e50;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Button Styling */
+button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.edit{
+  /* EDIT Button */
+  background-color: #3498db;
+  color: white;
+  margin-right: 5px;
+}
+
+.edit:hover {
+  background-color: #2980b9;
+}
+
+.delete{
+  /* DELETE Button */
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delete:hover {
+  background-color: #c0392b;
+}
+
+.add{
+    color: white;
+    background-color: hsl(120, 73%, 45%);
+}
+.add:hover{
+    background-color: hsla(120, 73%, 45%, 0.719);
+}
+
+
+
+/* MODAL CSS */
+
+.modal-container {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* When Javascript adds the 'active' class, show the container */
+.modal-container.active {
+    display: flex; 
+}
+
+.active-modal{
+    display: block !important;
+}
+
+#modal-edit, #modal-add{
+    display: none;
+}
+
+
+/* Modal Box */
+.modal{
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+}
+
+.modal h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 2px solid #f1f1f1;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Form Input Layout */
+.row-input {
+    display: flex;
+    gap: 15px; /* Spaces the inputs apart */
+    margin-bottom: 15px;
+}
+
+/* Input & Select Field Styling */
+.row-input input, 
+.row-input select {
+    flex: 1; /* Makes fields take up equal space */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-family: inherit; /* Inherits Segoe UI from body */
+    transition: border-color 0.3s ease;
+}
+
+/* Focus state for accessibility and polish */
+.row-input input:focus, 
+.row-input select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+}
+
+/* Modal Action Buttons */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end; /* Pushes buttons to the right */
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.btn-cancel {
+    background-color: #ecf0f1;
+    color: #333;
+}
+
+.btn-cancel:hover {
+    background-color: #bdc3c7;
+}
+
+.btn-save {
+    background-color: #2ecc71; /* A nice "success" green */
+    color: white;
+}
+
+.btn-save:hover {
+    background-color: #27ae60;
+}
