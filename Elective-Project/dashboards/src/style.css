@@ -479,7 +479,7 @@ select.form-control { cursor: pointer; }
   border-left: 4px solid var(--primary);
 }
 .announce-card.urgent { border-left-color: var(--red); }
-.announce-card.important { border-left-color: var(--primary); }
+.announce-card.important { border-left-color: var(--orange); }
 .announce-meta { font-size: 11.5px; color: var(--gray-400); margin-top: 4px; }
 .announce-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
 .announce-card p { font-size: 13px; color: var(--gray-600); line-height: 1.5; }

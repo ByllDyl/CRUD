@@ -98,7 +98,23 @@ function filterCerts(type, btn) {
     const tabs = document.querySelectorAll('.pill-tab');
     tabs.forEach(t => t.classList.remove('active'));
     if (btn) btn.classList.add('active');
-    console.log('Filtering certificates by:', type);
+    
+    const tableBody = document.getElementById('certTable');
+    if (!tableBody) return;
+    
+    const rows = tableBody.getElementsByTagName('tr');
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        if (row.cells.length < 3) continue; // Skip if not a valid data row
+        
+        const certType = row.cells[2].innerText.trim();
+        
+        if (type === 'all' || certType === type) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    }
 }
 
 function viewResident(btn) {
@@ -128,22 +144,22 @@ function viewResident(btn) {
     const body = document.getElementById('viewResidentBody');
     body.innerHTML = `
         <div style="display:flex;gap:20px;align-items:center;margin-bottom:20px;">
-            <div style="width:60px;height:60px;border-radius:50%;background:var(--navy);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0;">${initials}</div>
+            <div style="width:60px;height:60px;border-radius:50%;background:var(--primary);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0;">${initials}</div>
             <div>
-                <div style="font-size:18px;font-weight:700;">${name}</div>
+                <div style="font-size:18px;font-weight:700; ">${name}</div>
                 <div style="font-size:13px;color:var(--gray-400);">${purok} &bull; ${age} yrs old</div>
                 <span class="badge badge-${badgeColor}" style="margin-top:4px;">${voterText}</span>
             </div>
         </div>
         <table style="width:100%;font-size:13.5px;">
-            <tr><td style="color:var(--gray-400);padding:6px 0;width:140px;">Date of Birth</td><td>${dob}</td></tr>
-            <tr><td style="color:var(--gray-400);padding:6px 0;">Gender</td><td>${gender}</td></tr>
-            <tr><td style="color:var(--gray-400);padding:6px 0;">Civil Status</td><td>${civil}</td></tr>
-            <tr><td style="color:var(--gray-400);padding:6px 0;">Occupation</td><td>${occupation}</td></tr>
-            <tr><td style="color:var(--gray-400);padding:6px 0;">Complete Address</td><td>${address}</td></tr>
-            <tr><td style="color:var(--gray-400);padding:6px 0;">Contact</td><td>${contact}</td></tr>
-            <tr><td style="color:var(--gray-400);padding:6px 0;">Registered Voter</td><td>${voter}</td></tr>
-            <tr><td style="color:var(--gray-400);padding:6px 0;">Date Registered</td><td>${added}</td></tr>
+            <tr><td style="color:var(--gray-600);padding:6px 0;width:140px;">Date of Birth</td><td>${dob}</td></tr>
+            <tr><td style="color:var(--gray-600);padding:6px 0;">Gender</td><td>${gender}</td></tr>
+            <tr><td style="color:var(--gray-600);padding:6px 0;">Civil Status</td><td>${civil}</td></tr>
+            <tr><td style="color:var(--gray-600);padding:6px 0;">Occupation</td><td>${occupation}</td></tr>
+            <tr><td style="color:var(--gray-600);padding:6px 0;">Complete Address</td><td>${address}</td></tr>
+            <tr><td style="color:var(--gray-600);padding:6px 0;">Contact</td><td>${contact}</td></tr>
+            <tr><td style="color:var(--gray-600);padding:6px 0;">Registered Voter</td><td>${voter}</td></tr>
+            <tr><td style="color:var(--gray-600);padding:6px 0;">Date Registered</td><td>${added}</td></tr>
         </table>
     `;
 
@@ -153,6 +169,45 @@ function viewResident(btn) {
 function saveResident() { 
     closeModal('modalResident'); 
     alert('Resident registered successfully!'); 
+}
+
+function viewHousehold(btn) {
+    const head = btn.getAttribute('data-head') || 'N/A';
+    const address = btn.getAttribute('data-address') || 'N/A';
+    const purok = btn.getAttribute('data-purok') || 'N/A';
+    const members = btn.getAttribute('data-members') || '0';
+    const housing = btn.getAttribute('data-housing') || 'N/A';
+    const contact = btn.getAttribute('data-contact') || 'N/A';
+
+    const nameParts = head.trim().split(' ').filter(n => n.length > 0);
+    let initials = 'HH';
+    if (nameParts.length >= 2) {
+        initials = (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
+    } else if (nameParts.length === 1) {
+        initials = nameParts[0].substring(0, 2).toUpperCase();
+    }
+
+    const body = document.getElementById('viewHHBody');
+    if (body) {
+        body.innerHTML = `
+            <div style="display:flex;gap:20px;align-items:center;margin-bottom:20px;">
+                <div style="width:60px;height:60px;border-radius:50%;background:var(--primary);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0;">${initials}</div>
+                <div>
+                    <div style="font-size:18px;font-weight:700; ">${head}</div>
+                    <div style="font-size:13px;color:var(--gray-400);">${purok}</div>
+                    <span class="badge badge-blue" style="margin-top:4px;">${members} Members</span>
+                </div>
+            </div>
+            <table style="width:100%;font-size:13.5px;">
+                <tr><td style="color:var(--gray-600);padding:6px 0;width:140px;">Complete Address</td><td>${address}</td></tr>
+                <tr><td style="color:var(--gray-600);padding:6px 0;">Purok</td><td>${purok}</td></tr>
+                <tr><td style="color:var(--gray-600);padding:6px 0;">Housing Type</td><td>${housing}</td></tr>
+                <tr><td style="color:var(--gray-600);padding:6px 0;">Contact Number</td><td>${contact}</td></tr>
+                <tr><td style="color:var(--gray-600);padding:6px 0;">No. of Members</td><td>${members}</td></tr>
+            </table>
+        `;
+    }
+    openModal('modalViewHH');
 }
 
 function saveHousehold() { 

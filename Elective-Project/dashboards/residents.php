@@ -281,7 +281,7 @@
             </div>
         </form>
     </div>
-
+ 
     <!-- VIEW RESIDENT -->
     <div class="modal-overlay" id="modalViewResident">
         <div class="modal">

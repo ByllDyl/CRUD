@@ -51,6 +51,11 @@
     $voter_row = mysqli_fetch_assoc($voter_result);
     $voters = $voter_row['total'];
 
+    $household_sql = "SELECT COUNT(*) as total FROM household_records";
+    $household_result = mysqli_query($conn, $household_sql);
+    $household_row = mysqli_fetch_assoc($household_result);
+    $households = $household_row['total'];
+
 
 ?>
 
@@ -161,7 +166,7 @@
                     <div class="stat-icon" style="background:#E6F5ED;">🏘️</div>
                     <div class="stat-info">
                         <div class="stat-label">Households</div>
-                        <div class="stat-value" id="dashHouseholds">0</div>
+                        <div class="stat-value" id="dashHouseholds"><?php  echo $households;  ?></div>
                         <div class="stat-sub">↑ Registered</div>
                     </div>
                 </div>
@@ -203,7 +208,7 @@
                             </thead>
                             <tbody id="dashResTable">
                                 <?php
-                                $recent_sql = mysqli_query($conn, "SELECT * FROM residents ORDER BY id DESC LIMIT 5");
+                                $recent_sql = mysqli_query($conn, "SELECT * FROM residents ORDER BY id DESC LIMIT 10");
                                 while ($row = mysqli_fetch_assoc($recent_sql)) {
                                 ?>
                                     <tr>

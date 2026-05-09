@@ -119,7 +119,37 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="householdTable"></tbody>
+                        <tbody id="householdTable">
+                        <?php 
+                            $sql_res = mysqli_query($conn, "SELECT * FROM household_records");
+                            while($row = mysqli_fetch_assoc($sql_res)):
+                                $id = $row['id'];
+                                $household_head = $row['household_head'];
+                                $purok_no = $row['purok_no'];
+                                $no_members = $row['no_of_members'];
+                                $complete_address = $row['complete_address'];
+                                $housing_type = $row['housing_type'];
+                                $contact = $row['contact'];
+                        ?>
+                            <tr>
+                                <td><?php echo $id; ?></td>
+                                <td><?php echo $household_head; ?></td>
+                                <td><?php echo $complete_address; ?></td>
+                                <td><?php echo $purok_no; ?></td>
+                                <td><?php echo $no_members; ?></td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="viewHousehold(this)" 
+                                        data-head="<?php echo htmlspecialchars($household_head); ?>"
+                                        data-address="<?php echo htmlspecialchars($complete_address); ?>"
+                                        data-purok="<?php echo htmlspecialchars($purok_no); ?>"
+                                        data-members="<?php echo htmlspecialchars($no_members); ?>"
+                                        data-housing="<?php echo htmlspecialchars($housing_type); ?>"
+                                        data-contact="<?php echo htmlspecialchars($contact); ?>">View</button>
+                                    <button class="btn btn-danger" onclick="deleteHH(<?php echo $id; ?>)">Delete</button>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -181,6 +211,21 @@
             <div class="modal-footer">
                 <button class="btn btn-ghost" onclick="closeModal('modalHousehold')">Cancel</button>
                 <button class="btn btn-primary" onclick="saveHousehold()">Save Household</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW HOUSEHOLD -->
+    <div class="modal-overlay" id="modalViewHH">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Household Details</div>
+                <button class="modal-close" onclick="closeModal('modalViewHH')">✕</button>
+            </div>
+            <div class="modal-body" id="viewHHBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal('modalViewHH')">Close</button>
             </div>
         </div>
     </div>
