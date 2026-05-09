@@ -23,7 +23,7 @@ editBtn.forEach(btn =>{
 
 addBtn.forEach(btn =>{
     btn.addEventListener('click', () => {
-        modalContainer.classList.add('active');
+        modalContainer.classList.add('active'); 
         modalAdd.classList.add('active-modal');
         modalEdit.classList.remove('active-modal');
     });
