@@ -1,3 +1,21 @@
+<?php
+
+    session_start();
+
+    $errors = [
+        'login' => $_SESSION['login_error'] ?? '',
+        'register' =>  $_SESSION['register_error'] ?? ''
+    ];
+    $activeForm = $_SESSION['active_form'] ?? 'login';
+    session_unset();
+
+    function showError($error){
+        return !empty($error) ? "<p class = 'error-message'> $error </p>" : '';
+    }
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,12 +30,13 @@
 
     <!-- Login Container -->
     <div class="auth-container active" id="login-container">
-        <div class="brand-icon">BPnB</div>
+        <div class="brand-icon">PnB</div>
         <h2 class="auth-title">Welcome Back</h2>
         <p class="auth-subtitle">Log in to access your barangay dashboard.</p>
 
         <form action="action.php" method="POST">
             <div class="form-group">
+                <?php echo showError($errors['login']); ?>
                 <label class="form-label">Email Address or Username</label>
                 <div class="input-group">
                     <input type="text" class="form-control" name="username" placeholder="Enter your email or username" required>

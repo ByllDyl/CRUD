@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "config.php";
+require_once 'config.php';
 
 // Check if the form was submitted
 if (isset($_POST['login'])) {
@@ -22,7 +22,10 @@ if (isset($_POST['login'])) {
             exit();
         }
     } else {
-        echo "Invalid username or password";
+        $_SESSION['login_error'] = "Invalid username or password";
+        $_SESSION["active_form"] = "login";
+        header("Location: login.php");
+        exit();
     }
 }
 
