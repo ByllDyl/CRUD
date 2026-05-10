@@ -1,148 +1,163 @@
 function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    if (sidebar && overlay) {
-        sidebar.classList.toggle('open');
-        overlay.classList.toggle('active');
-    }
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  if (sidebar && overlay) {
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("active");
+  }
 }
 
 function closeSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    if (sidebar && overlay) {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('active');
-    }
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  if (sidebar && overlay) {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("active");
+  }
 }
 
 function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.add('open');
-    }
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.add("open");
+  }
 }
 
 function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.remove('open');
-    }
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove("open");
+  }
 }
 
-window.addEventListener('click', function(event) {
-    if (event.target.classList.contains('modal-overlay')) {
-        event.target.classList.remove('open');
-    }
+window.addEventListener("click", function (event) {
+  if (event.target.classList.contains("modal-overlay")) {
+    event.target.classList.remove("open");
+  }
 });
 
 function updateDate() {
-    const dateElement = document.getElementById('topbarDate');
-    if (dateElement) {
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        dateElement.innerText = new Date().toLocaleDateString('en-US', options);
-    }
+  const dateElement = document.getElementById("topbarDate");
+  if (dateElement) {
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    dateElement.innerText = new Date().toLocaleDateString("en-US", options);
+  }
 }
 updateDate();
 
-
 function filterResidentsTable() {
-    const table = document.getElementById('residentTable');
-    if (!table) return;
+  const table = document.getElementById("residentTable");
+  if (!table) return;
 
-    const purokSelect = document.getElementById('residentPurok');
-    const genderSelect = document.getElementById('residentGender');
-    const statusSelect = document.getElementById('residentStatus');
-    const globalSearchInput = document.getElementById('globalSearch');
-    const residentSearchInput = document.getElementById('residentSearch');
+  const purokSelect = document.getElementById("residentPurok");
+  const genderSelect = document.getElementById("residentGender");
+  const statusSelect = document.getElementById("residentStatus");
+  const globalSearchInput = document.getElementById("globalSearch");
+  const residentSearchInput = document.getElementById("residentSearch");
 
-    const purokFilter = purokSelect ? purokSelect.value.toLowerCase() : '';
-    const genderFilter = genderSelect ? genderSelect.value.toLowerCase() : '';
-    const statusFilter = statusSelect ? statusSelect.value.toLowerCase() : '';
-    const globalSearch = globalSearchInput ? globalSearchInput.value.toLowerCase() : '';
-    const residentSearch = residentSearchInput ? residentSearchInput.value.toLowerCase() : '';
-    const searchFilter = residentSearch || globalSearch;
+  const purokFilter = purokSelect ? purokSelect.value.toLowerCase() : "";
+  const genderFilter = genderSelect ? genderSelect.value.toLowerCase() : "";
+  const statusFilter = statusSelect ? statusSelect.value.toLowerCase() : "";
+  const globalSearch = globalSearchInput
+    ? globalSearchInput.value.toLowerCase()
+    : "";
+  const residentSearch = residentSearchInput
+    ? residentSearchInput.value.toLowerCase()
+    : "";
+  const searchFilter = residentSearch || globalSearch;
 
-    const rows = table.getElementsByTagName('tr');
-    for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        if (row.cells.length < 5) continue; 
+  const rows = table.getElementsByTagName("tr");
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    if (row.cells.length < 5) continue;
 
-        const name = row.cells[1].innerText.toLowerCase();
-        const gender = row.cells[3].innerText.toLowerCase();
-        const purok = row.cells[4].innerText.toLowerCase();
-        const voterStatus = row.cells[6] ? row.cells[6].innerText.toLowerCase() : '';
+    const name = row.cells[1].innerText.toLowerCase();
+    const gender = row.cells[3].innerText.toLowerCase();
+    const purok = row.cells[4].innerText.toLowerCase();
+    const voterStatus = row.cells[6]
+      ? row.cells[6].innerText.toLowerCase()
+      : "";
 
-        let matchesPurok = purokFilter === '' || purok.includes(purokFilter);
-        let matchesGender = genderFilter === '' || gender === genderFilter;
-        let matchesStatus = statusFilter === '' || voterStatus === statusFilter;
-        let matchesSearch = searchFilter === '' || name.includes(searchFilter);
+    let matchesPurok = purokFilter === "" || purok.includes(purokFilter);
+    let matchesGender = genderFilter === "" || gender === genderFilter;
+    let matchesStatus = statusFilter === "" || voterStatus === statusFilter;
+    let matchesSearch = searchFilter === "" || name.includes(searchFilter);
 
-        if (matchesPurok && matchesGender && matchesStatus && matchesSearch) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
+    if (matchesPurok && matchesGender && matchesStatus && matchesSearch) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
     }
+  }
 }
 
-function handleGlobalSearch(val) { 
-    filterResidentsTable();
+function handleGlobalSearch(val) {
+  filterResidentsTable();
 }
 
-function renderResidents() { 
-    filterResidentsTable();
+function renderResidents() {
+  filterResidentsTable();
 }
 
-function filterCerts(type, btn) { 
-    const tabs = document.querySelectorAll('.pill-tab');
-    tabs.forEach(t => t.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    
-    const tableBody = document.getElementById('certTable');
-    if (!tableBody) return;
-    
-    const rows = tableBody.getElementsByTagName('tr');
-    for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        if (row.cells.length < 3) continue; // Skip if not a valid data row
-        
-        const certType = row.cells[2].innerText.trim();
-        
-        if (type === 'all' || certType === type) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
+function filterCerts(type, btn) {
+  const tabs = document.querySelectorAll(".pill-tab");
+  tabs.forEach((t) => t.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+
+  const tableBody = document.getElementById("certTable");
+  if (!tableBody) return;
+
+  const rows = tableBody.getElementsByTagName("tr");
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    if (row.cells.length < 3) continue; // Skip if not a valid data row
+
+    const certType = row.cells[2].innerText.trim();
+
+    if (type === "all" || certType === type) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
     }
+  }
 }
 
 function viewResident(btn) {
-    const name = btn.getAttribute('data-name') || 'N/A';
-    const dob = btn.getAttribute('data-dob') || 'N/A';
-    const age = btn.getAttribute('data-age') || 'N/A';
-    const gender = btn.getAttribute('data-gender') || 'N/A';
-    const civil = btn.getAttribute('data-civil') || 'N/A';
-    const purok = btn.getAttribute('data-purok') || 'N/A';
-    const contact = btn.getAttribute('data-contact') || 'N/A';
-    const address = btn.getAttribute('data-address') || 'N/A';
-    const occupation = btn.getAttribute('data-occupation') || 'N/A';
-    const voter = btn.getAttribute('data-voter') || 'No';
-    const added = btn.getAttribute('data-added') || 'N/A';
+  const name = btn.getAttribute("data-name") || "N/A";
+  const dob = btn.getAttribute("data-dob") || "N/A";
+  const age = btn.getAttribute("data-age") || "N/A";
+  const gender = btn.getAttribute("data-gender") || "N/A";
+  const civil = btn.getAttribute("data-civil") || "N/A";
+  const purok = btn.getAttribute("data-purok") || "N/A";
+  const contact = btn.getAttribute("data-contact") || "N/A";
+  const address = btn.getAttribute("data-address") || "N/A";
+  const occupation = btn.getAttribute("data-occupation") || "N/A";
+  const voter = btn.getAttribute("data-voter") || "No";
+  const added = btn.getAttribute("data-added") || "N/A";
 
-    const nameParts = name.trim().split(' ').filter(n => n.length > 0);
-    let initials = 'NA';
-    if (nameParts.length >= 2) {
-        initials = (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
-    } else if (nameParts.length === 1) {
-        initials = nameParts[0].substring(0, 2).toUpperCase();
-    }
+  const nameParts = name
+    .trim()
+    .split(" ")
+    .filter((n) => n.length > 0);
+  let initials = "NA";
+  if (nameParts.length >= 2) {
+    initials = (
+      nameParts[0][0] + nameParts[nameParts.length - 1][0]
+    ).toUpperCase();
+  } else if (nameParts.length === 1) {
+    initials = nameParts[0].substring(0, 2).toUpperCase();
+  }
 
-    const badgeColor = voter === 'Yes' ? 'blue' : 'gray';
-    const voterText = voter === 'Yes' ? 'Registered Voter' : 'Unregistered';
+  const badgeColor = voter === "Yes" ? "blue" : "gray";
+  const voterText = voter === "Yes" ? "Registered Voter" : "Unregistered";
 
-    const body = document.getElementById('viewResidentBody');
-    body.innerHTML = `
+  const body = document.getElementById("viewResidentBody");
+  body.innerHTML = `
         <div style="display:flex;gap:20px;align-items:center;margin-bottom:20px;">
             <div style="width:60px;height:60px;border-radius:50%;background:var(--primary);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0;">${initials}</div>
             <div>
@@ -163,33 +178,38 @@ function viewResident(btn) {
         </table>
     `;
 
-    openModal('modalViewResident');
+  openModal("modalViewResident");
 }
 
-function saveResident() { 
-    closeModal('modalResident'); 
-    alert('Resident registered successfully!'); 
+function saveResident() {
+  closeModal("modalResident");
+  alert("Resident registered successfully!");
 }
 
 function viewHousehold(btn) {
-    const head = btn.getAttribute('data-head') || 'N/A';
-    const address = btn.getAttribute('data-address') || 'N/A';
-    const purok = btn.getAttribute('data-purok') || 'N/A';
-    const members = btn.getAttribute('data-members') || '0';
-    const housing = btn.getAttribute('data-housing') || 'N/A';
-    const contact = btn.getAttribute('data-contact') || 'N/A';
+  const head = btn.getAttribute("data-head") || "N/A";
+  const address = btn.getAttribute("data-address") || "N/A";
+  const purok = btn.getAttribute("data-purok") || "N/A";
+  const members = btn.getAttribute("data-members") || "0";
+  const housing = btn.getAttribute("data-housing") || "N/A";
+  const contact = btn.getAttribute("data-contact") || "N/A";
 
-    const nameParts = head.trim().split(' ').filter(n => n.length > 0);
-    let initials = 'HH';
-    if (nameParts.length >= 2) {
-        initials = (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
-    } else if (nameParts.length === 1) {
-        initials = nameParts[0].substring(0, 2).toUpperCase();
-    }
+  const nameParts = head
+    .trim()
+    .split(" ")
+    .filter((n) => n.length > 0);
+  let initials = "HH";
+  if (nameParts.length >= 2) {
+    initials = (
+      nameParts[0][0] + nameParts[nameParts.length - 1][0]
+    ).toUpperCase();
+  } else if (nameParts.length === 1) {
+    initials = nameParts[0].substring(0, 2).toUpperCase();
+  }
 
-    const body = document.getElementById('viewHHBody');
-    if (body) {
-        body.innerHTML = `
+  const body = document.getElementById("viewHHBody");
+  if (body) {
+    body.innerHTML = `
             <div style="display:flex;gap:20px;align-items:center;margin-bottom:20px;">
                 <div style="width:60px;height:60px;border-radius:50%;background:var(--primary);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0;">${initials}</div>
                 <div>
@@ -206,74 +226,444 @@ function viewHousehold(btn) {
                 <tr><td style="color:var(--gray-600);padding:6px 0;">No. of Members</td><td>${members}</td></tr>
             </table>
         `;
-    }
-    openModal('modalViewHH');
+  }
+  openModal("modalViewHH");
 }
 
-function saveHousehold() { 
-    closeModal('modalHousehold'); 
-    alert('Household registered successfully!'); 
+function saveHousehold() {
+  closeModal("modalHousehold");
+  alert("Household registered successfully!");
 }
 
-function updateCertPreview() { 
-    const nameInput = document.getElementById('cResident');
-    const purposeInput = document.getElementById('cPurpose');
-    
-    if (nameInput) document.getElementById('certName').innerText = nameInput.value || '___________';
-    if (purposeInput) document.getElementById('certPurpose').innerText = purposeInput.value || '___________';
+function updateCertPreview() {
+  const nameInput = document.getElementById("cResident");
+  const purposeInput = document.getElementById("cPurpose");
+
+  if (nameInput)
+    document.getElementById("certName").innerText =
+      nameInput.value || "___________";
+  if (purposeInput)
+    document.getElementById("certPurpose").innerText =
+      purposeInput.value || "___________";
 }
 
-function saveCert() { 
-    closeModal('modalCert'); 
-    alert('Certificate issued successfully!'); 
+function saveCert() {
+  closeModal("modalCert");
+  alert("Certificate issued successfully!");
 }
 
-function saveBlotter() { 
-    closeModal('modalBlotter'); 
-    alert('Blotter report filed successfully!'); 
+function saveBlotter() {
+  closeModal("modalBlotter");
+  alert("Blotter report filed successfully!");
 }
 
-function saveAnnouncement() { 
-    closeModal('modalAnnounce'); 
-    alert('Announcement posted successfully!'); 
+function saveAnnouncement() {
+  closeModal("modalAnnounce");
+  alert("Announcement posted successfully!");
 }
 
-function saveOfficial() { 
-    closeModal('modalOfficial'); 
-    alert('Barangay official added successfully!'); 
+function saveOfficial() {
+  closeModal("modalOfficial");
+  alert("Barangay official added successfully!");
 }
 
 function updateBlotterStatus(id, newStatus) {
-    fetch('backend/update_blotter_status.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'id=' + id + '&status=' + encodeURIComponent(newStatus)
+  fetch("backend/update_blotter_status.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: "id=" + id + "&status=" + encodeURIComponent(newStatus),
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      console.log(data);
+      // You can add a success notification here if you want
     })
-    .then(response => response.text())
-    .then(data => {
-        console.log(data);
-        // You can add a success notification here if you want
-    })
-    .catch(error => console.error('Error:', error));
+    .catch((error) => console.error("Error:", error));
 }
 
 function viewBlotter(btn) {
-    const narrative = btn.getAttribute('data-narrative') || 'No narrative provided.';
-    const narrativeEl = document.getElementById('viewBlotterNarrative');
-    if (narrativeEl) {
-        narrativeEl.innerText = narrative;
-    }
-    openModal('modalViewBlotter');
+  const narrative =
+    btn.getAttribute("data-narrative") || "No narrative provided.";
+  const narrativeEl = document.getElementById("viewBlotterNarrative");
+  if (narrativeEl) {
+    narrativeEl.innerText = narrative;
+  }
+  openModal("modalViewBlotter");
 }
 
 function editOfficial(id, name, position, committee, contact, term) {
-    document.getElementById('edit_oId').value = id;
-    document.getElementById('edit_oName').value = name;
-    document.getElementById('edit_oPosition').value = position;
-    document.getElementById('edit_oCommittee').value = committee;
-    document.getElementById('edit_oContact').value = contact;
-    document.getElementById('edit_oTerm').value = term;
-    openModal('modalEditOfficial');
+  document.getElementById("edit_oId").value = id;
+  document.getElementById("edit_oName").value = name;
+  document.getElementById("edit_oPosition").value = position;
+  document.getElementById("edit_oCommittee").value = committee;
+  document.getElementById("edit_oContact").value = contact;
+  document.getElementById("edit_oTerm").value = term;
+  openModal("modalEditOfficial");
 }
+
+fetch("analyticsCharts/purok_pop.php")
+  .then((response) => response.json())
+  .then((data) => {
+    const labels = data.map((item) => item.purok_no);
+    const residentCount = data.map((item) => item.resident_count);
+
+    const ctx = document.getElementById("chartPurok").getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Number of Residents",
+            data: residentCount,
+
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(54, 162, 235, 0.6)",
+              "rgba(255, 206, 86, 0.6)",
+              "rgba(75, 192, 192, 0.6)",
+              "rgba(153, 102, 255, 0.6)",
+              "rgba(255, 159, 64, 0.6)",
+              "rgba(199, 199, 199, 0.6)",
+            ],
+
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+              "rgba(158, 158, 158, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+            },
+          },
+        },
+        plugins: {
+          title: {
+            display: false,
+          },
+          legend: {
+            display: false,
+          },
+        },
+      },
+    });
+  })
+  .catch((error) => console.error("Error:", error));
+
+fetch("analyticsCharts/gender.php")
+  .then((response) => response.json())
+  .then((data) => {
+    const labels = data.map((item) => item.gender);
+    const genderCount = data.map((item) => item.gender_count);
+
+    const ctx = document.getElementById("chartGender").getContext("2d");
+    new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Number of Residents",
+            data: genderCount,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.7)",
+              "rgba(54, 162, 235, 0.7)",
+            ],
+            borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: "bottom",
+          },
+        },
+      },
+    });
+  })
+  .catch((error) => console.error("Error:", error));
+
+fetch("analyticsCharts/residents_age.php")
+  .then((response) => response.json())
+  .then((data) => {
+    const labels = data.map((item) => item.age_group);
+    const ageCount = data.map((item) => item.resident_count);
+    const colors = [
+      "rgba(255, 99, 132, 0.7)",
+      "rgba(54, 162, 235, 0.7)",
+      "rgba(75, 192, 192, 0.7)",
+      "rgba(255, 206, 86, 0.7)",
+      "rgba(153, 102, 255, 0.7)",
+    ];
+    const borderColors = [
+      "rgba(255, 99, 132, 1)",
+      "rgba(54, 162, 235, 1)",
+      "rgba(75, 192, 192, 1)",
+      "rgba(255, 206, 86, 1)",
+      "rgba(153, 102, 255, 1)",
+    ];
+    const ctx = document.getElementById("chartAge").getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            data: ageCount,
+            backgroundColor: colors,
+            borderColor: borderColors,
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+      },
+    });
+  })
+  .catch((error) => console.error("Error:", error));
+
+fetch("analyticsCharts/purok_pop.php")
+  .then((response) => response.json())
+  .then((data) => {
+    const labels = data.map((item) => item.purok_no);
+    const genderCount = data.map((item) => item.resident_count);
+
+    const ctx = document.getElementById("chartPurokBar").getContext("2d");
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Number of Residents",
+            data: genderCount,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.7)",
+              "rgba(54, 162, 235, 0.7)",
+              "rgba(75, 192, 192, 0.7)",
+              "rgba(255, 206, 86, 0.7)",
+              "rgba(153, 102, 255, 0.7)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(153, 102, 255, 1)",
+            ],
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+      },
+    });
+  })
+  .catch((error) => console.error("Error:", error));
+
+fetch("analyticsCharts/vote.php")
+  .then((response) => response.json())
+  .then((data) => {
+    const labels = data.map((item) => item.voter);
+    const voteCount = data.map((item) => item.count);
+
+    const ctx = document.getElementById("chartVoter").getContext("2d");
+    new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Number of Voters",
+            data: voteCount,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.7)",
+              "rgba(54, 162, 235, 0.7)",
+            ],
+            borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: "bottom",
+          },
+        },
+      },
+    });
+  })
+  .catch((error) => console.error("Error:", error));
+
+fetch("analyticsCharts/civil_status.php")
+  .then((response) => response.json())
+  .then((data) => {
+    const labels = data.map((item) => item.civil_status);
+    const voteCount = data.map((item) => item.total_count);
+
+    const ctx = document.getElementById("chartCivil").getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Residents",
+            data: voteCount,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.7)",
+              "rgba(54, 162, 235, 0.7)",
+              "rgba(75, 192, 192, 0.7)",
+              "rgba(255, 206, 86, 0.7)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(153, 102, 255, 1)",
+            ],
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+      },
+    });
+  })
+  .catch((error) => console.error("Error:", error));
+fetch("analyticsCharts/blotter.php")
+  .then((response) => response.json())
+  .then((data) => {
+    const labels = data.map((item) => item.status);
+    const voteCount = data.map((item) => item.total_count);
+
+    const ctx = document.getElementById("chartBlotterStatus").getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Residents",
+            data: voteCount,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.7)",
+              "rgba(54, 162, 235, 0.7)",
+              "rgba(75, 192, 192, 0.7)",
+              "rgba(255, 206, 86, 0.7)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(153, 102, 255, 1)",
+            ],
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+      },
+    });
+  })
+  .catch((error) => console.error("Error:", error));
+
+  fetch("analyticsCharts/certificates.php")
+  .then((response) => response.json())
+  .then((data) => {
+    const labels = data.map((item) => item.certificate_type);
+    const voteCount = data.map((item) => item.total_count);
+
+    const ctx = document.getElementById("chartCertType").getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Number of Requests",
+            data: voteCount,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.7)",
+              "rgba(54, 162, 235, 0.7)",
+              "rgba(75, 192, 192, 0.7)",
+              "rgba(255, 206, 86, 0.7)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(153, 102, 255, 1)",
+            ],
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+      },
+    });
+  })
+  .catch((error) => console.error("Error:", error));

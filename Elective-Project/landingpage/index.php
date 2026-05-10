@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barangay Poblacion | Official Portal</title>
+    <title>Barangay Purok ni Buulan | Official Portal</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Icons -->
@@ -19,7 +19,7 @@
             <div class="brand">
                 <div class="brand-seal">BG</div>
                 <div class="brand-text">
-                    <h1>Barangay Poblacion</h1>
+                    <h1>Barangay Purok ni Buulan</h1>
                 </div>
             </div>
             
@@ -46,7 +46,7 @@
                 <div class="badge-pill">
                     <span class="pulse-dot"></span> Official Barangay Portal
                 </div>
-                <h1 class="hero-title">Empowering the Community of <span>Poblacion</span></h1>
+                <h1 class="hero-title">Empowering the Community of <span>Purok ni Bulan</span></h1>
                 <p class="hero-subtitle">
                     Stay connected, request official documents, and get the latest announcements right at your fingertips. We are bringing barangay services closer to your home.
                 </p>
@@ -209,7 +209,7 @@
                 <div class="brand">
                     <div class="brand-seal">BG</div>
                     <div class="brand-text">
-                        <h1>Barangay Poblacion</h1>
+                        <h1>Barangay Purok ni Buulan</h1>
                     </div>
                 </div>
                 <p>Dedicated to serving the community with transparency, efficiency, and compassion.</p>
@@ -241,7 +241,7 @@
         </div>
         <div class="footer-bottom">
             <div class="container text-center">
-                <p>&copy; 2026 Barangay Poblacion Management System. All rights reserved.</p>
+                <p>&copy; 2026 Barangay Purok ni Buulan Management System. All rights reserved.</p>
             </div>
         </div>
     </footer>

@@ -35,7 +35,7 @@
         <div class="sidebar-brand">
             <div class="brand-seal">BG</div>
             <div class="brand-text">
-                <h1>Barangay Poblacion</h1>
+                <h1>Barangay Purok ni Buulan</h1>
                 <p>Management System</p>
             </div>
         </div>
@@ -80,6 +80,10 @@
                     <small>Punong Barangay</small>
                 </div>
             </div>
+            <a href="logout.php" class="nav-logout">
+                <span class="nav-icon"><i class='bx bxs-log-out'></i></span>
+                <span>Logout</span>
+            </a>
         </div>
     </aside>
 
@@ -206,7 +210,7 @@
                         <div class="cert-preview" id="certPreview">
                             <div class="cert-sub">Republic of the Philippines</div>
                             <div class="cert-title">Barangay Clearance</div>
-                            <div class="cert-sub" style="margin-top:4px;">Barangay Poblacion</div>
+                            <div class="cert-sub" style="margin-top:4px;">Barangay Purok ni Buulan</div>
                             <div class="cert-body" id="certBody" style="margin-top:16px;">
                                 This is to certify that <strong id="certName">___________</strong> is a bonafide resident of this barangay and is known to be a person of good moral character and has no derogatory record filed in this office.
                             </div>

@@ -35,7 +35,7 @@
         <div class="sidebar-brand">
             <div class="brand-seal">BG</div>
             <div class="brand-text">
-                <h1>Barangay Poblacion</h1>
+                <h1>Barangay Purok ni Buulan</h1>
                 <p>Management System</p>
             </div>
         </div>
@@ -80,6 +80,10 @@
                     <small>Punong Barangay</small>
                 </div>
             </div>
+            <a href="logout.php" class="nav-logout">
+                <span class="nav-icon"><i class='bx bxs-log-out'></i></span>
+                <span>Logout</span>
+            </a>
         </div>
     </aside>
 
@@ -112,8 +116,10 @@
                         <span style="font-size:16px">🧑‍🤝‍🧑</span>
                         <div class="card-title">Gender Distribution</div>
                     </div>
-                    <div class="card-body" style="display:flex;align-items:center;justify-content:center;padding:20px;">
-                        <canvas id="chartGender" style="max-width:220px;max-height:220px;"></canvas>
+                    <div class="card-body" style="padding:16px;">
+                        <div style="position:relative;height:220px;">
+                            <canvas id="chartGender"></canvas>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
@@ -143,8 +149,10 @@
                         <span style="font-size:16px">🗳️</span>
                         <div class="card-title">Voter Status</div>
                     </div>
-                    <div class="card-body" style="display:flex;align-items:center;justify-content:center;padding:20px;">
-                        <canvas id="chartVoter" style="max-width:180px;max-height:180px;"></canvas>
+                    <div class="card-body" style="padding:16px;">
+                        <div style="position:relative;height:200px;">
+                            <canvas id="chartVoter"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -156,8 +164,10 @@
                         <span style="font-size:16px">💍</span>
                         <div class="card-title">Civil Status Distribution</div>
                     </div>
-                    <div class="card-body" style="display:flex;align-items:center;justify-content:center;padding:20px;">
-                        <canvas id="chartCivil" style="max-width:220px;max-height:220px;"></canvas>
+                    <div class="card-body" style="padding:16px;">
+                        <div style="position:relative;height:220px;">
+                            <canvas id="chartCivil"></canvas>
+                        </div>
                     </div>
                 </div>
                 <div class="card">

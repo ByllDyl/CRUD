@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="nav-actions">
-                <a href="index.php" class="btn btn-outline">Logout <i class="fa-solid fa-right-from-bracket"></i></a>
+                <a href="../dashboards/logout.php" class="btn btn-outline">Logout <i class="fa-solid fa-right-from-bracket"></i></a>
             </div>
         </div>
     </nav>

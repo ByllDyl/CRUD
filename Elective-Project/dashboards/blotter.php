@@ -34,7 +34,7 @@
         <div class="sidebar-brand">
             <div class="brand-seal">BG</div>
             <div class="brand-text">
-                <h1>Barangay Poblacion</h1>
+                <h1>Barangay Purok ni Buulan</h1>
                 <p>Management System</p>
             </div>
         </div>
@@ -79,6 +79,10 @@
                     <small>Punong Barangay</small>
                 </div>
             </div>
+            <a href="logout.php" class="nav-logout">
+                <span class="nav-icon"><i class='bx bxs-log-out'></i></span>
+                <span>Logout</span>
+            </a>
         </div>
     </aside>
 
