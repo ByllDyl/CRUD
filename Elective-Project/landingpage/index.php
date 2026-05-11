@@ -244,15 +244,15 @@
             <div class="footer-contact">
                 <h3>Contact Us</h3>
                 <ul>
-                    <li><i class="fa-solid fa-location-dot"></i> Barangay Hall, Poblacion St.</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Barangay Hall, Purok 1</li>
                     <li><i class="fa-solid fa-phone"></i> (123) 456-7890</li>
-                    <li><i class="fa-solid fa-envelope"></i> official@brgypoblacion.gov</li>
+                    <li><i class="fa-solid fa-envelope"></i> official@brgypnb.gov</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
             <div class="container text-center">
-                <p>&copy; 2026 Barangay Purok ni Buulan Management System. All rights reserved.</p>
+                <p>&copy; 2026 Barangay Purok ni Bulan Management System. All rights reserved.</p>
             </div>
         </div>
     </footer>

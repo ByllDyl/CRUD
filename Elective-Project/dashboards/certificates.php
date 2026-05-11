@@ -193,13 +193,9 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
+                        <div class="form-group cPurpose">
                             <label class="form-label">Purpose *</label>
                             <input class="form-control" name="cPurpose" id="cPurpose" placeholder="e.g. Employment, Travel..." oninput="updateCertPreview()" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">OR Number</label>
-                            <input class="form-control" name="cOR" id="cOR" placeholder="e.g. 2024-0001">
                         </div>
                     </div>
                     <div class="form-group">

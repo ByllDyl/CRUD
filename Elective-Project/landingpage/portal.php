@@ -101,15 +101,15 @@
             <!-- Certificates Tab -->
             <div id="certificates" class="tab-pane">
                 <h2 class="section-title">Request Certificate</h2>
-                <form class="portal-form" action="#" method="POST">
+                <form class="portal-form" action="portalAction.php" method="POST">
                     <div class="form-group">
                         <label class="form-label">Type of Certificate</label>
                         <select class="form-select" name="cert_type" required>
                             <option value="" disabled selected>Select certificate type...</option>
-                            <option value="Clearance">Barangay Clearance</option>
-                            <option value="Indigency">Certificate of Indigency</option>
-                            <option value="Residency">Certificate of Residency</option>
-                            <option value="Business">Business Clearance</option>
+                            <option value="Barangay Clearance">Barangay Clearance</option>
+                            <option value="Certificate of Indigency">Certificate of Indigency</option>
+                            <option value="Certificate of Residency">Certificate of Residency</option>
+                            <option value="Business Permit Clearance">Business Permit Clearance</option>
                         </select>
                     </div>
 
@@ -121,12 +121,12 @@
                     <div class="form-group">
                         <label class="form-label">Delivery Method</label>
                         <select class="form-select" name="delivery" required>
-                            <option value="Pickup">Pick-up at Barangay Hall</option>
-                            <option value="Digital">Digital Copy (Email)</option>
+                            <option value="Pick-up at Barangay Hall" selected>Pick-up at Barangay Hall</option>
+                            <option value="Digital Copy(Email)">Digital Copy (Email)</option>
                         </select>
                     </div>
 
-                    <button type="button" class="btn btn-primary" onclick="alert('Certificate Request Submitted Successfully!')">
+                    <button type="submit" class="btn btn-primary" name="submit_cert">
                         Submit Request <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
@@ -135,7 +135,7 @@
             <!-- Blotter Tab -->
             <div id="blotter" class="tab-pane">
                 <h2 class="section-title">Report an Incident (Blotter)</h2>
-                <form class="portal-form" action="#" method="POST">
+                <form class="portal-form" action="portalAction.php" method="POST">
                     <div class="form-group">
                         <label class="form-label">Incident Date & Time</label>
                         <input type="datetime-local" class="form-control" name="incident_date" required>
@@ -152,11 +152,25 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="form-label">Incident Type</label>
+                        <select class="form-select" name="incident_type" required>
+                            <option value="" disabled selected>Select incident type...</option>
+                            <option value="Physical Altercation">Physical Altercation</option>
+                            <option value="Verbal Assault">Verbal Assault</option>
+                            <option value="Theft / Robbery">Theft / Robbery</option>
+                            <option value="Property Damage">Property Damage</option>
+                            <option value="Noise Complaint">Noise Complaint</option>
+                            <option value="Domestic Dispute">Domestic Dispute</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">Incident Narrative</label>
                         <textarea class="form-textarea" name="narrative" placeholder="Describe the incident in detail..." required></textarea>
                     </div>
 
-                    <button type="button" class="btn btn-primary" onclick="alert('Blotter Report Submitted Successfully!')">
+                    <button type="submit" class="btn btn-primary" name="submit_blotter">
                         Submit Report <i class="fa-solid fa-shield-halved"></i>
                     </button>
                 </form>
@@ -167,6 +181,16 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === 'blotter') {
+                alert('✅ Blotter report submitted successfully!');
+                history.replaceState(null, '', 'portal.php');
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                document.querySelector('[data-target="blotter"]').classList.add('active');
+                document.getElementById('blotter').classList.add('active');
+            }
+
             const navItems = document.querySelectorAll('.nav-item');
             const tabPanes = document.querySelectorAll('.tab-pane');
 

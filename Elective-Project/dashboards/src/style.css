@@ -561,3 +561,8 @@ select.form-control { cursor: pointer; }
 .pill-tabs { display: flex; gap: 6px; padding: 4px; background: var(--gray-100); border-radius: 10px; width: fit-content; margin-bottom: 20px; }
 .pill-tab { padding: 7px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; font-weight: 400; color: var(--gray-600); border: none; background: none; transition: all 0.18s; font-family: 'Inter', sans-serif; }
 .pill-tab.active { background: var(--white); color: var(--text-main); font-weight: 600; box-shadow: var(--shadow); }
+
+.form-group.cPurpose{
+  width: 100%;
+  grid-column: 1 / -1;
+}
