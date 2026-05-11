@@ -1,19 +1,18 @@
+<?php
+    require_once '../database/config.php';
+    $ann_sql = mysqli_query($conn, "SELECT * FROM announcements ORDER BY created_at DESC LIMIT 2");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barangay Purok ni Buulan | Official Portal</title>
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Styles -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
             <div class="brand">
@@ -71,7 +70,6 @@
                 </div>
             </div>
             <div class="hero-visual">
-                <!-- Abstract Glassmorphism Card as a visual placeholder -->
                 <div class="glass-card main-glass">
                     <div class="glass-header">
                         <i class="fa-regular fa-file-lines icon-lg"></i>
@@ -154,35 +152,48 @@
             </div>
             
             <div class="announcement-grid">
-                <!-- Card 1 -->
+                <?php
+                $icons = ['fa-bullhorn', 'fa-star', 'fa-bell', 'fa-circle-info', 'fa-triangle-exclamation', 'fa-flag'];
+                $colors = ['bg-indigo-light text-indigo', 'bg-orange-light text-orange', 'bg-indigo-light text-indigo'];
+                $i = 0;
+                if (mysqli_num_rows($ann_sql) == 0):
+                ?>
+                    <div class="news-card" style="grid-column:1/-1;text-align:center;padding:40px;">
+                        <i class="fa-solid fa-bullhorn" style="font-size:2rem;color:var(--gray-300);"></i>
+                        <p style="margin-top:12px;color:var(--gray-400);">No announcements yet.</p>
+                    </div>
+                <?php
+                else:
+                    while ($ann = mysqli_fetch_assoc($ann_sql)):
+                        $icon = $icons[$i % count($icons)];
+                        $colorClass = $colors[$i % count($colors)];
+                        $badgeClass = '';
+                        $badgeLabel = '';
+                        if ($ann['priority'] === 'Urgent') { $badgeClass = 'tag-urgent'; $badgeLabel = 'Urgent'; }
+                        elseif ($ann['priority'] === 'Important') { $badgeClass = 'tag-warning'; $badgeLabel = 'Important'; }
+                        $formattedDate = date('M j, Y', strtotime($ann['created_at']));
+                        $excerpt = mb_strlen($ann['content']) > 120 ? mb_substr($ann['content'], 0, 120) . '...' : $ann['content'];
+                        $i++;
+                ?>
                 <div class="news-card">
-                    <div class="news-img bg-indigo-light">
-                        <i class="fa-solid fa-syringe text-indigo"></i>
+                    <div class="news-img <?php echo $colorClass; ?>">
+                        <i class="fa-solid <?php echo $icon; ?>"></i>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
-                            <span class="news-date"><i class="fa-regular fa-calendar"></i> May 12, 2026</span>
-                            <span class="news-tag tag-urgent">Health</span>
+                            <span class="news-date"><i class="fa-regular fa-calendar"></i> <?php echo $formattedDate; ?></span>
+                            <?php if ($badgeLabel): ?>
+                            <span class="news-tag <?php echo $badgeClass; ?>"><?php echo htmlspecialchars($badgeLabel); ?></span>
+                            <?php endif; ?>
                         </div>
-                        <h3>Community Vaccination Drive</h3>
-                        <p>A free vaccination drive will be held at the barangay covered court this coming weekend. Please bring your valid IDs.</p>
+                        <h3><?php echo htmlspecialchars($ann['title']); ?></h3>
+                        <p><?php echo htmlspecialchars($excerpt); ?></p>
                     </div>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="news-card">
-                    <div class="news-img bg-orange-light">
-                        <i class="fa-solid fa-bolt text-orange"></i>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="news-date"><i class="fa-regular fa-calendar"></i> May 10, 2026</span>
-                            <span class="news-tag tag-warning">Advisory</span>
-                        </div>
-                        <h3>Scheduled Power Interruption</h3>
-                        <p>Please be advised of a scheduled power interruption on Friday, May 15, from 8:00 AM to 5:00 PM for maintenance works.</p>
-                    </div>
-                </div>
+                <?php
+                    endwhile;
+                endif;
+                ?>
             </div>
         </div>
     </section>
@@ -196,7 +207,7 @@
                     <p>Create your account today or log in to the portal to request services and track your documents.</p>
                 </div>
                 <div class="cta-actions">
-                    <a href="../dashboards/dashboard.php" class="btn btn-white btn-lg">Access Portal</a>
+                    <a href="login.php" class="btn btn-white btn-lg">Access Portal</a>
                 </div>
             </div>
         </div>
@@ -226,7 +237,7 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#announcements">Announcements</a></li>
-                    <li><a href="../dashboards/dashboard.php">Portal Login</a></li>
+                    <li><a href="login.php">Portal Login</a></li>
                 </ul>
             </div>
             

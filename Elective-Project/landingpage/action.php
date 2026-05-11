@@ -2,7 +2,6 @@
 session_start();
 require_once 'config.php';
 
-// Check if the form was submitted
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];

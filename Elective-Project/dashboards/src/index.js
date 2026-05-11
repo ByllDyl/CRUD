@@ -115,7 +115,7 @@ function filterCerts(type, btn) {
   const rows = tableBody.getElementsByTagName("tr");
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
-    if (row.cells.length < 3) continue; // Skip if not a valid data row
+    if (row.cells.length < 3) continue; 
 
     const certType = row.cells[2].innerText.trim();
 
@@ -278,7 +278,6 @@ function updateBlotterStatus(id, newStatus) {
     .then((response) => response.text())
     .then((data) => {
       console.log(data);
-      // You can add a success notification here if you want
     })
     .catch((error) => console.error("Error:", error));
 }

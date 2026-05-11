@@ -1,10 +1,13 @@
 <?php
     session_start();
+    require_once '../database/config.php';
 
     if (!isset($_SESSION['username'])) {
         header("Location: login.php");
         exit();
     }
+
+    $ann_sql = mysqli_query($conn, "SELECT * FROM announcements ORDER BY created_at DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,17 +15,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resident Portal - Barangay Purok ni Bulan</title>
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Styles -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="portal.css">
 </head>
 <body>
-
-    <!-- Navbar -->
     <nav class="navbar-portal">
         <div class="container flex-between">
             <div class="brand">
@@ -70,33 +68,33 @@
             <div id="announcements" class="tab-pane active">
                 <h2 class="section-title">Latest Announcements</h2>
                 <div class="announcement-list">
-                    <div class="announcement-item">
-                        <div class="announcement-header">
-                            <h3 class="announcement-title">Community Vaccination Drive</h3>
-                            <span class="announcement-date"><i class="fa-regular fa-calendar"></i> May 12, 2026</span>
+                    <?php if (mysqli_num_rows($ann_sql) == 0): ?>
+                        <div style="text-align:center;padding:48px 0;color:#94a3b8;">
+                            <i class="fa-solid fa-bullhorn" style="font-size:2rem;"></i>
+                            <p style="margin-top:12px;">No announcements posted yet.</p>
                         </div>
-                        <p class="announcement-body">
-                            A free vaccination drive will be held at the barangay covered court this coming weekend. Please bring your valid IDs and vaccination cards if available. Open to all residents aged 18 and above.
-                        </p>
-                    </div>
-                    <div class="announcement-item">
-                        <div class="announcement-header">
-                            <h3 class="announcement-title">Scheduled Power Interruption</h3>
-                            <span class="announcement-date"><i class="fa-regular fa-calendar"></i> May 10, 2026</span>
+                    <?php else: ?>
+                        <?php while ($ann = mysqli_fetch_assoc($ann_sql)): ?>
+                        <div class="announcement-item">
+                            <div class="announcement-header">
+                                <h3 class="announcement-title">
+                                    <?php echo htmlspecialchars($ann['title']); ?>
+                                    <?php if ($ann['priority'] === 'Urgent'): ?>
+                                        <span style="font-size:11px;font-weight:600;background:#FEE2E2;color:#DC2626;padding:2px 8px;border-radius:20px;margin-left:8px;">URGENT</span>
+                                    <?php elseif ($ann['priority'] === 'Important'): ?>
+                                        <span style="font-size:11px;font-weight:600;background:#FEF3C7;color:#B45309;padding:2px 8px;border-radius:20px;margin-left:8px;">IMPORTANT</span>
+                                    <?php endif; ?>
+                                </h3>
+                                <span class="announcement-date">
+                                    <i class="fa-regular fa-calendar"></i>
+                                    <?php echo date('M j, Y', strtotime($ann['created_at'])); ?>
+                                    &middot; Posted by <?php echo htmlspecialchars($ann['posted_by']); ?>
+                                </span>
+                            </div>
+                            <p class="announcement-body"><?php echo nl2br(htmlspecialchars($ann['content'])); ?></p>
                         </div>
-                        <p class="announcement-body">
-                            Please be advised of a scheduled power interruption on Friday, May 15, from 8:00 AM to 5:00 PM for maintenance works by the electric cooperative. Plan your activities accordingly.
-                        </p>
-                    </div>
-                    <div class="announcement-item">
-                        <div class="announcement-header">
-                            <h3 class="announcement-title">Relief Goods Distribution</h3>
-                            <span class="announcement-date"><i class="fa-regular fa-calendar"></i> May 08, 2026</span>
-                        </div>
-                        <p class="announcement-body">
-                            The barangay will be distributing relief goods for families affected by the recent typhoon. Please coordinate with your respective Purok Leaders for the schedule of distribution.
-                        </p>
-                    </div>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -174,15 +172,9 @@
 
             navItems.forEach(item => {
                 item.addEventListener('click', () => {
-                    // Remove active class from all nav items
                     navItems.forEach(nav => nav.classList.remove('active'));
-                    // Add active class to clicked nav item
                     item.classList.add('active');
-
-                    // Hide all tab panes
                     tabPanes.forEach(pane => pane.classList.remove('active'));
-                    
-                    // Show target tab pane
                     const targetId = item.getAttribute('data-target');
                     document.getElementById(targetId).classList.add('active');
                 });

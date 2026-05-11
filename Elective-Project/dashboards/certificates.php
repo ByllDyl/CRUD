@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include "../database/config.php";
     $sql = mysqli_query($conn, "SELECT * FROM residents");
 
@@ -19,18 +20,13 @@
     <title>Barangay Management System</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- Link to external CSS -->
     <link rel="stylesheet" href="src/style.css?v=<?php echo time(); ?>">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-
-    <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <div class="brand-seal">BG</div>
@@ -74,10 +70,15 @@
 
         <div class="sidebar-footer">
             <div class="sidebar-user">
-                <div class="user-avatar">CP</div>
+                <div class="user-avatar"><?php
+                    $words = explode(' ', trim($_SESSION['username']));
+                    $initials = '';
+                    foreach($words as $w) { if(!empty($w)) $initials .= strtoupper($w[0]); }
+                    echo substr($initials, 0, 2);
+                ?></div>
                 <div class="user-info">
-                    <span>Capt. Pedro Reyes</span>
-                    <small>Punong Barangay</small>
+                    <span><?php echo $_SESSION['username']; ?></span>
+                    <small><?php echo $_SESSION['role']; ?></small>
                 </div>
             </div>
             <a href="logout.php" class="nav-logout">
@@ -94,11 +95,7 @@
             <button class="hamburger" onclick="toggleSidebar()">☰</button>
             <div class="topbar-title" id="topbarTitle">Dashboard</div>
             <span class="topbar-date" id="topbarDate"></span>
-            <div class="topbar-search">
-                <span style="color:var(--gray-400);font-size:14px;"><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input type="text" placeholder="Search residents..." id="globalSearch" oninput="handleGlobalSearch(this.value)">
-            </div>
-            <button class="topbar-btn" title="Notifications"><i class="fa-regular fa-bell"></i><span class="notif-dot"></span></button>
+            <button class="topbar-btn" title="Notifications"><i class="fa-regular fa-bell" onclick="window.location.href='announcements.php'"></i><span class="notif-dot"></span></button>
             <button class="topbar-btn" title="Print" onclick="window.print()"><i class="fa-solid fa-print"></i></button>
         </div>
 
