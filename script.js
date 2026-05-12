@@ -12,7 +12,6 @@ editBtn.forEach(btn =>{
         modalEdit.classList.add('active-modal');
         modalAdd.classList.remove('active-modal');
 
-        // Populate Edit Modal Data
         document.getElementById('edit-id').value = btn.getAttribute('data-id');
         document.getElementById('edit-fname').value = btn.getAttribute('data-fname');
         document.getElementById('edit-lname').value = btn.getAttribute('data-lname');

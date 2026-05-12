@@ -3,7 +3,6 @@ include('config.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
-    // Add User
     if (isset($_POST['add_resident'])) {
         $fname = mysqli_real_escape_string($conn, $_POST['firstName']);
         $lname = mysqli_real_escape_string($conn, $_POST['lastName']);
@@ -16,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    // Delete User
     if (isset($_POST['delete_id'])) {
         $id = mysqli_real_escape_string($conn, $_POST['delete_id']);
         
