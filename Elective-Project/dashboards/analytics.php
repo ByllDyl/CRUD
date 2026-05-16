@@ -2,13 +2,6 @@
     session_start();
     include "../database/config.php";
     $sql = mysqli_query($conn, "SELECT * FROM residents");
-
-    $nav_sql = "SELECT COUNT(*) as total FROM residents";
-    $nav_result = mysqli_query($conn, $nav_sql);
-    $nav_row = mysqli_fetch_assoc($nav_result);
-    $total = $nav_row['total'];
-
-
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +24,7 @@
         <div class="sidebar-brand">
             <div class="brand-seal">BG</div>
             <div class="brand-text">
-                <h1>Barangay Purok ni Buulan</h1>
+                <h1>Barangay Purok ni Bulan</h1>
                 <p>Management System</p>
             </div>
         </div>
@@ -42,7 +35,7 @@
         </a>
         <a class="nav-item" href="residents.php">
             <span class="nav-icon"><i class='bx bx-group'></i></span> Residents
-            <span class="nav-badge" id="residentBadge"><?php echo $total; ?></span>
+            <span class="nav-badge" id="residentBadge"><?php echo $_SESSION['total']; ?></span>
         </a>
         <a class="nav-item" href="household.php">
             <span class="nav-icon"><i class="fa-solid fa-house"></i></span> Households
@@ -106,82 +99,106 @@
                 <p>Visual data overview of the barangay population and records</p>
             </div>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
-                <div class="card">
-                    <div class="card-header">
-                        <span style="font-size:16px">🧑‍🤝‍🧑</span>
-                        <div class="card-title">Gender Distribution</div>
+            <!-- TOP STATS / CHARTS -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
+                <div class="card" style="border:none; box-shadow: var(--shadow-md);">
+                    <div class="card-header" style="border-bottom: 1px solid var(--gray-100); padding: 20px 24px;">
+                        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(79, 70, 229, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 12px;">
+                            <i class="fa-solid fa-venus-mars"></i>
+                        </div>
+                        <div class="card-title" style="font-size: 16px;">Gender Distribution</div>
                     </div>
-                    <div class="card-body" style="padding:16px;">
-                        <div style="position:relative;height:220px;">
+                    <div class="card-body" style="padding:24px;">
+                        <div style="position:relative;height:240px;">
                             <canvas id="chartGender"></canvas>
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        <span style="font-size:16px">👶</span>
-                        <div class="card-title">Age Group Breakdown</div>
+                <div class="card" style="border:none; box-shadow: var(--shadow-md);">
+                    <div class="card-header" style="border-bottom: 1px solid var(--gray-100); padding: 20px 24px;">
+                        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(56, 189, 248, 0.1); color: #38BDF8; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 12px;">
+                            <i class="fa-solid fa-children"></i>
+                        </div>
+                        <div class="card-title" style="font-size: 16px;">Age Group Breakdown</div>
                     </div>
-                    <div class="card-body" style="padding:16px;">
-                        <canvas id="chartAge" height="200"></canvas>
+                    <div class="card-body" style="padding:24px;">
+                        <div style="position:relative;height:240px;">
+                            <canvas id="chartAge"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:20px;">
-                <div class="card">
-                    <div class="card-header">
-                        <span style="font-size:16px">🏘️</span>
-                        <div class="card-title">Population per Purok</div>
+            <!-- MAIN CHART -->
+            <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px;">
+                <div class="card" style="border:none; box-shadow: var(--shadow-md);">
+                    <div class="card-header" style="border-bottom: 1px solid var(--gray-100); padding: 20px 24px;">
+                        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(52, 211, 153, 0.1); color: #34D399; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 12px;">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <div class="card-title" style="font-size: 16px;">Population per Purok</div>
                     </div>
-                    <div class="card-body" style="padding:16px;">
-                        <canvas id="chartPurokBar" height="180"></canvas>
+                    <div class="card-body" style="padding:24px;">
+                        <div style="position:relative;height:280px;">
+                            <canvas id="chartPurokBar"></canvas>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        <span style="font-size:16px">🗳️</span>
-                        <div class="card-title">Voter Status</div>
+                <div class="card" style="border:none; box-shadow: var(--shadow-md);">
+                    <div class="card-header" style="border-bottom: 1px solid var(--gray-100); padding: 20px 24px;">
+                        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(251, 191, 36, 0.1); color: #FBBF24; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 12px;">
+                            <i class="fa-solid fa-check-to-slot"></i>
+                        </div>
+                        <div class="card-title" style="font-size: 16px;">Voter Status</div>
                     </div>
-                    <div class="card-body" style="padding:16px;">
-                        <div style="position:relative;height:200px;">
+                    <div class="card-body" style="padding:24px;">
+                        <div style="position:relative;height:280px;">
                             <canvas id="chartVoter"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
-                <div class="card">
-                    <div class="card-header">
-                        <span style="font-size:16px">💍</span>
-                        <div class="card-title">Civil Status Distribution</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
+                <div class="card" style="border:none; box-shadow: var(--shadow-md);">
+                    <div class="card-header" style="border-bottom: 1px solid var(--gray-100); padding: 20px 24px;">
+                        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(244, 114, 182, 0.1); color: #F472B6; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 12px;">
+                            <i class="fa-solid fa-ring"></i>
+                        </div>
+                        <div class="card-title" style="font-size: 16px;">Civil Status Distribution</div>
                     </div>
-                    <div class="card-body" style="padding:16px;">
-                        <div style="position:relative;height:220px;">
+                    <div class="card-body" style="padding:24px;">
+                        <div style="position:relative;height:240px;">
                             <canvas id="chartCivil"></canvas>
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        <span style="font-size:16px">📝</span>
-                        <div class="card-title">Blotter Case Status</div>
+                <div class="card" style="border:none; box-shadow: var(--shadow-md);">
+                    <div class="card-header" style="border-bottom: 1px solid var(--gray-100); padding: 20px 24px;">
+                        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(248, 113, 113, 0.1); color: #F87171; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 12px;">
+                            <i class="fa-solid fa-file-shield"></i>
+                        </div>
+                        <div class="card-title" style="font-size: 16px;">Blotter Case Status</div>
                     </div>
-                    <div class="card-body" style="padding:16px;">
-                        <canvas id="chartBlotterStatus" height="200"></canvas>
+                    <div class="card-body" style="padding:24px;">
+                        <div style="position:relative;height:240px;">
+                            <canvas id="chartBlotterStatus"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card" style="margin-bottom:20px;">
-                <div class="card-header">
-                    <span style="font-size:16px">📋</span>
-                    <div class="card-title">Certificates Issued by Type</div>
+            <div class="card" style="border:none; box-shadow: var(--shadow-md); margin-bottom:24px;">
+                <div class="card-header" style="border-bottom: 1px solid var(--gray-100); padding: 20px 24px;">
+                    <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(167, 139, 250, 0.1); color: #A78BFA; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 12px;">
+                        <i class="fa-solid fa-file-signature"></i>
+                    </div>
+                    <div class="card-title" style="font-size: 16px;">Certificates Issued by Type</div>
                 </div>
-                <div class="card-body" style="padding:16px;">
-                    <canvas id="chartCertType" height="110"></canvas>
+                <div class="card-body" style="padding:24px;">
+                    <div style="position:relative;height:250px;">
+                        <canvas id="chartCertType"></canvas>
+                    </div>
                 </div>
             </div>
         </div>

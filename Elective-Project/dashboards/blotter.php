@@ -30,7 +30,7 @@
         <div class="sidebar-brand">
             <div class="brand-seal">BG</div>
             <div class="brand-text">
-                <h1>Barangay Purok ni Buulan</h1>
+                <h1>Barangay Purok ni Bulan</h1>
                 <p>Management System</p>
             </div>
         </div>
@@ -41,7 +41,7 @@
         </a>
         <a class="nav-item" href="residents.php">
             <span class="nav-icon"><i class='bx bx-group'></i></span> Residents
-            <span class="nav-badge" id="residentBadge"><?php echo $total; ?></span>
+            <span class="nav-badge" id="residentBadge"><?php echo $_SESSION['total']; ?></span>
         </a>
         <a class="nav-item" href="household.php">
             <span class="nav-icon"><i class="fa-solid fa-house"></i></span> Households
@@ -149,7 +149,7 @@
                                 <td>
                                     <button class="btn btn-primary btn-sm" onclick="viewBlotter(this)" data-narrative="<?php echo htmlspecialchars($b['incident_narrative'] ?? 'No narrative provided.'); ?>">View</button>
                                     <form action="backend/action.php" method="POST" style="display:inline;">
-                                        <button class="btn btn-danger btn-sm" type="submit" name="delete_blotter" value="<?php echo $b['id']; ?>">Del</button>
+                                        <button class="btn btn-danger btn-sm" type="submit" name="delete_blotter" value="<?php echo $b['id']; ?>" onclick="return confirm('Are you sure you want to delete this blotter record?');">Del</button>
                                     </form>
                                 </td>
                             </tr>

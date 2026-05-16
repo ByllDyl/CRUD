@@ -2,13 +2,6 @@
     session_start();
     include "../database/config.php";
     $sql = mysqli_query($conn, "SELECT * FROM residents");
-
-    $nav_sql = "SELECT COUNT(*) as total FROM residents";
-    $nav_result = mysqli_query($conn, $nav_sql);
-    $nav_row = mysqli_fetch_assoc($nav_result);
-    $total = $nav_row['total'];
-
-
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +24,7 @@
         <div class="sidebar-brand">
             <div class="brand-seal">BG</div>
             <div class="brand-text">
-                <h1>Barangay Purok ni Buulan</h1>
+                <h1>Barangay Purok ni Bulan</h1>
                 <p>Management System</p>
             </div>
         </div>
@@ -42,7 +35,7 @@
         </a>
         <a class="nav-item" href="residents.php">
             <span class="nav-icon"><i class='bx bx-group'></i></span> Residents
-            <span class="nav-badge" id="residentBadge"><?php echo $total; ?></span>
+            <span class="nav-badge" id="residentBadge"><?php echo $_SESSION['total']; ?></span>
         </a>
         <a class="nav-item" href="household.php">
             <span class="nav-icon"><i class="fa-solid fa-house"></i></span> Households
@@ -146,14 +139,23 @@
                                             'Business Permit Clearance' => 'orange'
                                         ];
                                 ?>
-                                <tr>
+                                <tr class="cert-row" 
+                                    data-id="<?php echo $c['id']; ?>"
+                                    data-name="<?php echo htmlspecialchars($c['resident_name'], ENT_QUOTES); ?>"
+                                    data-type="<?php echo htmlspecialchars($c['certificate_type'], ENT_QUOTES); ?>"
+                                    data-purpose="<?php echo htmlspecialchars($c['purpose'], ENT_QUOTES); ?>"
+                                    data-date="<?php echo $c['date_issued']; ?>"
+                                    data-or="<?php echo htmlspecialchars($c['or_number'], ENT_QUOTES); ?>"
+                                    onclick="openCertPreview(this, event)"
+                                    title="Click to preview certificate"
+                                    style="cursor:pointer;">
                                     <td class="text-muted text-sm"><?php echo $c['id']; ?></td>
                                     <td><strong><?php echo $c['resident_name']; ?></strong></td>
                                     <td><span class="badge badge-<?php echo $typeColors[$c['certificate_type']]; ?>"><?php echo $c['certificate_type']; ?></span></td>
                                     <td><?php echo $c['purpose']; ?></td>
                                     <td><?php echo $c['date_issued']; ?></td>
                                     <td><?php echo $c['or_number']; ?></td>
-                                    <td><button class="btn btn-danger btn-sm" name="delete_cert" value="<?php echo $c['id']; ?>">Del</button></td>
+                                    <td><button class="btn btn-danger btn-sm" name="delete_cert" value="<?php echo $c['id']; ?>" onclick="event.stopPropagation()">Del</button></td>
                                 </tr>
 
                                 <?php }
@@ -203,7 +205,7 @@
                         <div class="cert-preview" id="certPreview">
                             <div class="cert-sub">Republic of the Philippines</div>
                             <div class="cert-title">Barangay Clearance</div>
-                            <div class="cert-sub" style="margin-top:4px;">Barangay Purok ni Buulan</div>
+                            <div class="cert-sub" style="margin-top:4px;">Barangay Purok ni Bulan</div>
                             <div class="cert-body" id="certBody" style="margin-top:16px;">
                                 This is to certify that <strong id="certName">___________</strong> is a bonafide resident of this barangay and is known to be a person of good moral character and has no derogatory record filed in this office.
                             </div>
@@ -216,7 +218,6 @@
                                 <div class="cert-sig-block">
                                     <div class="cert-sig-line"></div>
                                     <span>Punong Barangay</span>
-                                    <span style="font-size:11px;font-weight:600;margin-top:2px;">Capt. Pedro Reyes</span>
                                 </div>
                             </div>
                         </div>
@@ -229,8 +230,115 @@
             </div>
         </form>
     </div>
-    <!-- Link to external JS -->
+
+    <!-- ──────── CERTIFICATE PREVIEW MODAL ──────── -->
+    <div class="modal-overlay" id="modalCertPreview">
+        <div class="modal" style="max-width:700px;">
+            <div class="modal-header">
+                <div class="modal-title">Certificate Preview</div>
+                <button type="button" class="modal-close" onclick="closeModal('modalCertPreview')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="cert-preview" id="previewDocument" style="background:#fff;padding:40px 50px;">
+                    <!-- Header -->
+                    <div style="text-align:center;margin-bottom:6px;">
+                        <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#555;">Republic of the Philippines</div>
+                        <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#555;">Province of [Province] · Municipality of [Municipality]</div>
+                        <div style="font-size:22px;font-weight:700;color:#1a237e;margin:10px 0 2px;" id="pvCertTitle">Barangay Clearance</div>
+                        <div style="font-size:13px;font-weight:600;color:#333;">Barangay Purok ni Bulan</div>
+                        <hr style="border:none;border-top:2px solid #1a237e;margin:12px 0 6px;">
+                        <hr style="border:none;border-top:1px solid #1a237e;margin:0 0 16px;">
+                    </div>
+
+                    <!-- OR / Date row -->
+                    <div style="display:flex;justify-content:space-between;font-size:12px;color:#555;margin-bottom:20px;">
+                        <span>OR No.: <strong id="pvOR">—</strong></span>
+                        <span>Date Issued: <strong id="pvDate">—</strong></span>
+                    </div>
+
+                    <!-- Body -->
+                    <div style="font-size:14px;line-height:1.9;color:#222;text-align:justify;" id="pvBody">
+                        This is to certify that <strong id="pvName">___________</strong>, a bonafide resident of this barangay, is known to be a person of good moral character and has no derogatory record filed in this office.
+                    </div>
+
+                    <div style="font-size:13px;margin-top:14px;color:#444;">Purpose: <em id="pvPurpose">—</em></div>
+
+                    <!-- Signature block -->
+                    <div style="display:flex;justify-content:space-between;margin-top:50px;">
+                        <div style="text-align:center;width:40%;">
+                            <div style="border-top:1px solid #333;padding-top:6px;font-size:12px;">Requestor's Signature</div>
+                        </div>
+                        <div style="text-align:center;width:40%;">
+                            <div style="border-top:1px solid #333;padding-top:6px;font-size:12px;">Punong Barangay</div>
+                        </div>
+                    </div>
+
+                    <!-- Seal watermark -->
+                    <div style="text-align:center;margin-top:24px;font-size:11px;color:#aaa;letter-spacing:1px;">— OFFICIAL DOCUMENT —</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ghost" onclick="closeModal('modalCertPreview')">Close</button>
+                <form id="deleteCertForm" action="backend/action.php" method="post" onsubmit="alert('Print successful!');">
+                    <button type="submit" id="pvDeleteBtn" name="delete_cert" class="btn btn-primary"><i class="fa-solid fa-print"></i>&nbsp; Print</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .cert-row:hover { background: var(--gray-50, #f8f9fa); }
+        @media print {
+            body > *:not(#printRoot) { display: none !important; }
+            #printRoot {
+                display: block !important;
+                position: fixed;
+                inset: 0;
+                z-index: 99999;
+                background: #fff;
+                padding: 40px 60px;
+            }
+        }
+    </style>
+
     <script src="src/index.js"></script>
+
+    <script>
+    const certBodies = {
+        'Barangay Clearance':
+            'This is to certify that <strong>{name}</strong>, a bonafide resident of this barangay, is known to be a person of good moral character and has no derogatory record filed in this office.',
+        'Certificate of Residency':
+            'This is to certify that <strong>{name}</strong> is a bonafide resident of Barangay Purok ni Bulan. He/She has been residing in this barangay for an extended period of time and is known to be a law-abiding citizen.',
+        'Certificate of Indigency':
+            'This is to certify that <strong>{name}</strong> is a legitimate resident of this barangay and belongs to an indigent family. This certification is issued upon request of the interested party for whatever legal purpose it may serve.',
+        'Business Permit Clearance':
+            'This is to certify that <strong>{name}</strong> has been granted a Business Permit Clearance by this barangay. The establishment is duly registered and has complied with the requirements of this office.'
+    };
+
+    function openCertPreview(row, event) {
+        if (event) event.stopPropagation();
+
+        const id      = row.dataset.id;
+        const name    = row.dataset.name;
+        const type    = row.dataset.type;
+        const purpose = row.dataset.purpose;
+        const date    = row.dataset.date;
+        const or      = row.dataset.or;
+
+        document.getElementById('pvCertTitle').textContent = type;
+        document.getElementById('pvDeleteBtn').value = id;
+        document.getElementById('pvPurpose').textContent = purpose;
+        document.getElementById('pvDate').textContent = date;
+        document.getElementById('pvOR').textContent = or || '—';
+
+        const bodyTpl = certBodies[type] ||
+            'This is to certify that <strong>{name}</strong> is a resident of Barangay Purok ni Bulan.';
+        document.getElementById('pvBody').innerHTML =
+            bodyTpl.replace('{name}', name);
+
+        openModal('modalCertPreview');
+    }
+    </script>
 </body>
 
 </html>

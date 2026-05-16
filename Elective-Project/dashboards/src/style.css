@@ -318,8 +318,29 @@ body {
 .stat-sub { font-size: 11px; color: var(--green); margin-top: 4px; font-weight: 500; }
 .stat-sub.down { color: var(--red); }
 
-/* ── TABLES ── */
-.tbl-wrap { overflow-x: auto; }
+/* ── TABLES & LISTS ── */
+.tbl-wrap, .announce-list { 
+  overflow-x: auto; 
+  overflow-y: auto;
+  max-height: 550px;
+  padding-right: 6px;
+}
+
+.tbl-wrap::-webkit-scrollbar, .announce-list::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.tbl-wrap::-webkit-scrollbar-track, .announce-list::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 4px;
+}
+.tbl-wrap::-webkit-scrollbar-thumb, .announce-list::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 4px;
+}
+.tbl-wrap::-webkit-scrollbar-thumb:hover, .announce-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
 
 table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); background: var(--gray-100); border-bottom: 1px solid var(--gray-200); white-space: nowrap; }

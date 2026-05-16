@@ -7,6 +7,12 @@
         exit();
     }
 
+    $show_animation = false;
+    if (isset($_SESSION['just_logged_in']) && $_SESSION['just_logged_in'] === true) {
+        $show_animation = true;
+        unset($_SESSION['just_logged_in']);
+    }
+
     $ann_sql = mysqli_query($conn, "SELECT * FROM announcements ORDER BY created_at DESC");
 ?>
 <!DOCTYPE html>
@@ -21,6 +27,67 @@
     <link rel="stylesheet" href="portal.css">
 </head>
 <body>
+    <?php if ($show_animation): ?>
+    <style>
+        #intro-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #intro-overlay h1 {
+            color: #ffffff;
+            font-size: 2.8rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: textIntro 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            text-align: center;
+            padding: 0 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        @keyframes textIntro {
+            0% { opacity: 0; transform: translateY(30px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-30px); }
+        }
+        
+        .navbar-portal, .portal-container {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .navbar-portal.animate-in, .portal-container.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+    <div id="intro-overlay">
+        <h1>Welcome to the Barangay Purok ni Bulan Portal</h1>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const overlay = document.getElementById('intro-overlay');
+                if (overlay) {
+                    overlay.style.opacity = '0';
+                    overlay.style.visibility = 'hidden';
+                }
+                setTimeout(() => {
+                    document.querySelector('.navbar-portal').classList.add('animate-in');
+                    document.querySelector('.portal-container').classList.add('animate-in');
+                }, 100);
+            }, 2500);
+        });
+    </script>
+    <?php endif; ?>
+
     <nav class="navbar-portal">
         <div class="container flex-between">
             <div class="brand">

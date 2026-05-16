@@ -302,65 +302,111 @@ function editOfficial(id, name, position, committee, contact, term) {
   openModal("modalEditOfficial");
 }
 
+const commonBarOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      backgroundColor: '#1E293B',
+      titleColor: '#F8FAFC',
+      bodyColor: '#F8FAFC',
+      padding: 12,
+      cornerRadius: 8,
+      displayColors: true,
+      boxPadding: 4,
+      usePointStyle: true
+    }
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      border: { display: false },
+      grid: { color: '#F1F5F9', drawTicks: false },
+      ticks: { color: '#64748B', font: { family: 'Inter', size: 11 }, padding: 8, stepSize: 1 }
+    },
+    x: {
+      border: { display: false },
+      grid: { display: false },
+      ticks: { color: '#64748B', font: { family: 'Inter', size: 11 }, padding: 8 }
+    }
+  }
+};
+
+const commonDoughnutOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  cutout: '75%',
+  plugins: {
+    legend: {
+      display: true,
+      position: 'bottom',
+      labels: {
+        color: '#475569',
+        usePointStyle: true,
+        pointStyle: 'circle',
+        padding: 20,
+        font: { family: 'Inter', size: 12 }
+      }
+    },
+    tooltip: {
+      backgroundColor: '#1E293B',
+      titleColor: '#F8FAFC',
+      bodyColor: '#F8FAFC',
+      padding: 12,
+      cornerRadius: 8,
+      displayColors: true,
+      boxPadding: 4,
+      usePointStyle: true
+    }
+  }
+};
+
+const modernColors = [
+  '#4F46E5', // Indigo
+  '#38BDF8', // Sky Blue
+  '#F472B6', // Pink
+  '#34D399', // Emerald
+  '#FBBF24', // Amber
+  '#A78BFA', // Violet
+  '#F87171'  // Red
+];
+
 fetch("analyticsCharts/purok_pop.php")
   .then((response) => response.json())
   .then((data) => {
     const labels = data.map((item) => item.purok_no);
     const residentCount = data.map((item) => item.resident_count);
 
-    const ctx = document.getElementById("chartPurok").getContext("2d");
+    const el = document.getElementById("chartPurokBar");
+    if (!el) return;
+    const ctx = el.getContext("2d");
+    
+    // Create a gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(79, 70, 229, 0.2)');
+    gradient.addColorStop(1, 'rgba(79, 70, 229, 0)');
+
     new Chart(ctx, {
-      type: "bar",
+      type: "line",
       data: {
         labels: labels,
-        datasets: [
-          {
-            label: "Number of Residents",
-            data: residentCount,
-
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.6)",
-              "rgba(54, 162, 235, 0.6)",
-              "rgba(255, 206, 86, 0.6)",
-              "rgba(75, 192, 192, 0.6)",
-              "rgba(153, 102, 255, 0.6)",
-              "rgba(255, 159, 64, 0.6)",
-              "rgba(199, 199, 199, 0.6)",
-            ],
-
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-              "rgba(158, 158, 158, 1)",
-            ],
-            borderWidth: 1,
-          },
-        ],
+        datasets: [{
+          label: "Number of Residents",
+          data: residentCount,
+          backgroundColor: gradient,
+          borderColor: '#4F46E5',
+          borderWidth: 3,
+          pointBackgroundColor: '#FFFFFF',
+          pointBorderColor: '#4F46E5',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          tension: 0.4
+        }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 1,
-            },
-          },
-        },
-        plugins: {
-          title: {
-            display: false,
-          },
-          legend: {
-            display: false,
-          },
-        },
-      },
+      options: commonBarOptions
     });
   })
   .catch((error) => console.error("Error:", error));
@@ -371,34 +417,21 @@ fetch("analyticsCharts/gender.php")
     const labels = data.map((item) => item.gender);
     const genderCount = data.map((item) => item.gender_count);
 
-    const ctx = document.getElementById("chartGender").getContext("2d");
+    const el = document.getElementById("chartGender");
+    if (!el) return;
+    const ctx = el.getContext("2d");
     new Chart(ctx, {
       type: "doughnut",
       data: {
         labels: labels,
-        datasets: [
-          {
-            label: "Number of Residents",
-            data: genderCount,
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.7)",
-              "rgba(54, 162, 235, 0.7)",
-            ],
-            borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
-            borderWidth: 2,
-          },
-        ],
+        datasets: [{
+          data: genderCount,
+          backgroundColor: ['#4F46E5', '#F472B6'],
+          borderWidth: 0,
+          hoverOffset: 4
+        }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: true,
-            position: "bottom",
-          },
-        },
-      },
+      options: commonDoughnutOptions
     });
   })
   .catch((error) => console.error("Error:", error));
@@ -408,89 +441,24 @@ fetch("analyticsCharts/residents_age.php")
   .then((data) => {
     const labels = data.map((item) => item.age_group);
     const ageCount = data.map((item) => item.resident_count);
-    const colors = [
-      "rgba(255, 99, 132, 0.7)",
-      "rgba(54, 162, 235, 0.7)",
-      "rgba(75, 192, 192, 0.7)",
-      "rgba(255, 206, 86, 0.7)",
-      "rgba(153, 102, 255, 0.7)",
-    ];
-    const borderColors = [
-      "rgba(255, 99, 132, 1)",
-      "rgba(54, 162, 235, 1)",
-      "rgba(75, 192, 192, 1)",
-      "rgba(255, 206, 86, 1)",
-      "rgba(153, 102, 255, 1)",
-    ];
-    const ctx = document.getElementById("chartAge").getContext("2d");
+
+    const el = document.getElementById("chartAge");
+    if (!el) return;
+    const ctx = el.getContext("2d");
     new Chart(ctx, {
       type: "bar",
       data: {
         labels: labels,
-        datasets: [
-          {
-            data: ageCount,
-            backgroundColor: colors,
-            borderColor: borderColors,
-            borderWidth: 2,
-          },
-        ],
+        datasets: [{
+          label: "Residents",
+          data: ageCount,
+          backgroundColor: modernColors,
+          borderWidth: 0,
+          borderRadius: 6,
+          barPercentage: 0.6
+        }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-      },
-    });
-  })
-  .catch((error) => console.error("Error:", error));
-
-fetch("analyticsCharts/purok_pop.php")
-  .then((response) => response.json())
-  .then((data) => {
-    const labels = data.map((item) => item.purok_no);
-    const genderCount = data.map((item) => item.resident_count);
-
-    const ctx = document.getElementById("chartPurokBar").getContext("2d");
-    new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: "Number of Residents",
-            data: genderCount,
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.7)",
-              "rgba(54, 162, 235, 0.7)",
-              "rgba(75, 192, 192, 0.7)",
-              "rgba(255, 206, 86, 0.7)",
-              "rgba(153, 102, 255, 0.7)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(153, 102, 255, 1)",
-            ],
-            borderWidth: 2,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-      },
+      options: commonBarOptions
     });
   })
   .catch((error) => console.error("Error:", error));
@@ -501,34 +469,21 @@ fetch("analyticsCharts/vote.php")
     const labels = data.map((item) => item.voter);
     const voteCount = data.map((item) => item.count);
 
-    const ctx = document.getElementById("chartVoter").getContext("2d");
+    const el = document.getElementById("chartVoter");
+    if (!el) return;
+    const ctx = el.getContext("2d");
     new Chart(ctx, {
       type: "doughnut",
       data: {
         labels: labels,
-        datasets: [
-          {
-            label: "Number of Voters",
-            data: voteCount,
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.7)",
-              "rgba(54, 162, 235, 0.7)",
-            ],
-            borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
-            borderWidth: 2,
-          },
-        ],
+        datasets: [{
+          data: voteCount,
+          backgroundColor: ['#38BDF8', '#94A3B8'],
+          borderWidth: 0,
+          hoverOffset: 4
+        }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: true,
-            position: "bottom",
-          },
-        },
-      },
+      options: commonDoughnutOptions
     });
   })
   .catch((error) => console.error("Error:", error));
@@ -537,132 +492,95 @@ fetch("analyticsCharts/civil_status.php")
   .then((response) => response.json())
   .then((data) => {
     const labels = data.map((item) => item.civil_status);
-    const voteCount = data.map((item) => item.total_count);
+    const count = data.map((item) => item.total_count);
 
-    const ctx = document.getElementById("chartCivil").getContext("2d");
+    const el = document.getElementById("chartCivil");
+    if (!el) return;
+    const ctx = el.getContext("2d");
     new Chart(ctx, {
       type: "bar",
       data: {
         labels: labels,
-        datasets: [
-          {
-            label: "Residents",
-            data: voteCount,
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.7)",
-              "rgba(54, 162, 235, 0.7)",
-              "rgba(75, 192, 192, 0.7)",
-              "rgba(255, 206, 86, 0.7)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(153, 102, 255, 1)",
-            ],
-            borderWidth: 2,
-          },
-        ],
+        datasets: [{
+          label: "Residents",
+          data: count,
+          backgroundColor: modernColors[3],
+          borderWidth: 0,
+          borderRadius: 6,
+          barPercentage: 0.5
+        }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-      },
+      options: commonBarOptions
     });
   })
   .catch((error) => console.error("Error:", error));
+
 fetch("analyticsCharts/blotter.php")
   .then((response) => response.json())
   .then((data) => {
     const labels = data.map((item) => item.status);
-    const voteCount = data.map((item) => item.total_count);
+    const count = data.map((item) => item.total_count);
 
-    const ctx = document.getElementById("chartBlotterStatus").getContext("2d");
+    const el = document.getElementById("chartBlotterStatus");
+    if (!el) return;
+    const ctx = el.getContext("2d");
     new Chart(ctx, {
       type: "bar",
       data: {
         labels: labels,
-        datasets: [
-          {
-            label: "Residents",
-            data: voteCount,
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.7)",
-              "rgba(54, 162, 235, 0.7)",
-              "rgba(75, 192, 192, 0.7)",
-              "rgba(255, 206, 86, 0.7)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(153, 102, 255, 1)",
-            ],
-            borderWidth: 2,
-          },
-        ],
+        datasets: [{
+          label: "Cases",
+          data: count,
+          backgroundColor: modernColors[4],
+          borderWidth: 0,
+          borderRadius: 6,
+          barPercentage: 0.5
+        }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-      },
+      options: commonBarOptions
     });
   })
   .catch((error) => console.error("Error:", error));
 
-  fetch("analyticsCharts/certificates.php")
+fetch("analyticsCharts/certificates.php")
   .then((response) => response.json())
   .then((data) => {
     const labels = data.map((item) => item.certificate_type);
-    const voteCount = data.map((item) => item.total_count);
+    const count = data.map((item) => item.total_count);
 
-    const ctx = document.getElementById("chartCertType").getContext("2d");
+    const el = document.getElementById("chartCertType");
+    if (!el) return;
+    const ctx = el.getContext("2d");
     new Chart(ctx, {
       type: "bar",
       data: {
         labels: labels,
-        datasets: [
-          {
-            label: "Number of Requests",
-            data: voteCount,
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.7)",
-              "rgba(54, 162, 235, 0.7)",
-              "rgba(75, 192, 192, 0.7)",
-              "rgba(255, 206, 86, 0.7)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(153, 102, 255, 1)",
-            ],
-            borderWidth: 2,
-          },
-        ],
+        datasets: [{
+          label: "Requests",
+          data: count,
+          backgroundColor: modernColors[5],
+          borderWidth: 0,
+          borderRadius: 6,
+          barPercentage: 0.5
+        }]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
+        ...commonBarOptions,
+        indexAxis: 'y', // Makes it a horizontal bar chart
+        scales: {
+          x: {
+            beginAtZero: true,
+            border: { display: false },
+            grid: { color: '#F1F5F9', drawTicks: false },
+            ticks: { color: '#64748B', font: { family: 'Inter', size: 11 }, padding: 8, stepSize: 1 }
           },
-        },
-      },
+          y: {
+            border: { display: false },
+            grid: { display: false },
+            ticks: { color: '#64748B', font: { family: 'Inter', size: 11 }, padding: 8 }
+          }
+        }
+      }
     });
   })
   .catch((error) => console.error("Error:", error));

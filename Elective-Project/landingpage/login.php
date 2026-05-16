@@ -132,6 +132,8 @@
                         <option value="Purok 3">Purok 3</option>
                         <option value="Purok 4">Purok 4</option>
                         <option value="Purok 5">Purok 5</option>
+                        <option value="Purok 6">Purok 6</option>
+                        <option value="Purok 7">Purok 7</option>
                     </select>
                 </div>
                 <div class="form-group full-width">
@@ -173,7 +175,6 @@
         </div>
     </div>
 
-    <!-- JavaScript to toggle views -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const loginContainer = document.getElementById('login-container');

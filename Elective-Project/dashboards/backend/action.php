@@ -33,6 +33,7 @@ if (isset($_POST['delete_id'])) {
     header("Location: ../residents.php");
     exit();
 }
+
 if (isset($_POST['delete_cert'])) {
     $id = mysqli_real_escape_string($conn, $_POST['delete_cert']);
 
@@ -142,6 +143,35 @@ if (isset($_POST['edit_official'])) {
     $query = "UPDATE barangay_officials SET full_name='$oName', position='$oPosition', committee='$oCommittee', contact_number='$oContact', term='$oTerm' WHERE id='$id'";
     if (mysqli_query($conn, $query)) {
         header("Location: ../officials.php");
+    } else {
+        echo "Error: " . $query . "<br>" . mysqli_error($conn);
+    }
+    exit();
+}
+  
+if(isset($_POST['delete_household'])){
+    $id = mysqli_real_escape_string($conn, $_POST['delete_household']);
+    $query = "DELETE FROM household_records WHERE id='$id'";
+    if (mysqli_query($conn, $query)) {
+        header("Location: ../household.php");
+    } else {
+        echo "Error: " . $query . "<br>" . mysqli_error($conn);
+    }
+    exit();
+}
+    
+    
+if(isset($_POST['add_household'])){
+    $hhName = mysqli_real_escape_string($conn, $_POST['hhName']);
+    $hhAddress = mysqli_real_escape_string($conn, $_POST['hhAddress']);
+    $hhPurok = mysqli_real_escape_string($conn, $_POST['hhPurok']);
+    $hhMembers = mysqli_real_escape_string($conn, $_POST['hhMembers']);
+    $hhHousing = mysqli_real_escape_string($conn, $_POST['hhHousing']);
+    $hhContact = mysqli_real_escape_string($conn, $_POST['hhContact']);
+    $query = "INSERT INTO household_records (`id`, `household_head`, `purok_no`, `no_of_members`, `complete_address`, `housing_type`, `contact`, `created_at`) 
+            VALUES (NULL, '$hhName', '$hhPurok', '$hhMembers', '$hhAddress', '$hhHousing', '$hhContact', current_timestamp())";
+    if (mysqli_query($conn, $query)) {
+        header("Location: ../household.php");
     } else {
         echo "Error: " . $query . "<br>" . mysqli_error($conn);
     }

@@ -190,6 +190,24 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-height: 550px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.announcement-list::-webkit-scrollbar {
+  width: 6px;
+}
+.announcement-list::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 4px;
+}
+.announcement-list::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 4px;
+}
+.announcement-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 .announcement-item {

@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barangay Purok ni Buulan | Official Portal</title>
+    <title>Barangay Purok ni Bulan | Official Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -18,7 +18,7 @@
             <div class="brand">
                 <div class="brand-seal">BG</div>
                 <div class="brand-text">
-                    <h1>Barangay Purok ni Buulan</h1>
+                    <h1>Barangay Purok ni Bulan</h1>
                 </div>
             </div>
             
@@ -220,7 +220,7 @@
                 <div class="brand">
                     <div class="brand-seal">BG</div>
                     <div class="brand-text">
-                        <h1>Barangay Purok ni Buulan</h1>
+                        <h1>Barangay Purok ni Bulan</h1>
                     </div>
                 </div>
                 <p>Dedicated to serving the community with transparency, efficiency, and compassion.</p>

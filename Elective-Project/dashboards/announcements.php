@@ -2,13 +2,6 @@
     session_start();
     include "../database/config.php";
     $sql = mysqli_query($conn, "SELECT * FROM residents");
-
-    $nav_sql = "SELECT COUNT(*) as total FROM residents";
-    $nav_result = mysqli_query($conn, $nav_sql);
-    $nav_row = mysqli_fetch_assoc($nav_result);
-    $total = $nav_row['total'];
-
-
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +24,7 @@
         <div class="sidebar-brand">
             <div class="brand-seal">BG</div>
             <div class="brand-text">
-                <h1>Barangay Purok ni Buulan</h1>
+                <h1>Barangay Purok ni Bulan</h1>
                 <p>Management System</p>
             </div>
         </div>
@@ -42,7 +35,7 @@
         </a>
         <a class="nav-item" href="residents.php">
             <span class="nav-icon"><i class='bx bx-group'></i></span> Residents
-            <span class="nav-badge" id="residentBadge"><?php echo $total; ?></span>
+            <span class="nav-badge" id="residentBadge"><?php echo $_SESSION['total']; ?></span>
         </a>
         <a class="nav-item" href="household.php">
             <span class="nav-icon"><i class="fa-solid fa-house"></i></span> Households
