@@ -19,7 +19,7 @@ if (isset($_POST['submit_blotter'])) {
     } else {
         die("Blotter report could not be submitted. Error: " . mysqli_error($conn));
     }
-}
+} 
 
 if (isset($_POST['submit_cert'])) {
     $cert_type          = $_POST['cert_type'];

@@ -256,6 +256,13 @@
                 document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
                 document.querySelector('[data-target="blotter"]').classList.add('active');
                 document.getElementById('blotter').classList.add('active');
+            } else if (urlParams.get('success') === 'certificate') {
+                alert('✅ Certificate request submitted successfully!');
+                history.replaceState(null, '', 'portal.php');
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                document.querySelector('[data-target="certificates"]').classList.add('active');
+                document.getElementById('certificates').classList.add('active');
             }
 
             const navItems = document.querySelectorAll('.nav-item');
