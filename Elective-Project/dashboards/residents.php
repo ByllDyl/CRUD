@@ -252,7 +252,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Contact Number</label>
-                            <input class="form-control" name="contact" id="rContact" placeholder="09XX XXX XXXX">
+                            <input class="form-control" name="contact" id="rContact" placeholder="09XX XXX XXXX" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         </div>
                     </div>
                     <div class="form-group">

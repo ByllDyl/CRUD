@@ -121,7 +121,7 @@
                 <!-- Contact & Address -->
                 <div class="form-group">
                     <label class="form-label">Contact Number</label>
-                    <input type="tel" class="form-control" name="contact" placeholder="09XX XXX XXXX">
+                    <input type="tel" class="form-control" name="contact" placeholder="09XX XXX XXXX" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Purok *</label>

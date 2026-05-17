@@ -199,7 +199,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Contact</label>
-                            <input name="oContact" class="form-control" id="oContact" placeholder="09XX XXX XXXX">
+                            <input name="oContact" class="form-control" id="oContact" placeholder="09XX XXX XXXX" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         </div>
                     </div>
                     <div class="form-group">
@@ -249,7 +249,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Contact</label>
-                            <input name="oContact" class="form-control" id="edit_oContact" placeholder="09XX XXX XXXX">
+                            <input name="oContact" class="form-control" id="edit_oContact" placeholder="09XX XXX XXXX" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         </div>
                     </div>
                     <div class="form-group">
